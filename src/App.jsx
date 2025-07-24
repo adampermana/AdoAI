@@ -1,48 +1,66 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import ClipLoader from "react-spinners/ClockLoader";
-
-import Home from "./pages/Home.jsx";
-import logo from "./assets/logo.svg";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
+import { motion, AnimatePresence } from "framer-motion";
+import Header from "./components/layout/Header";
+import Home from "./pages/Home";
+import Chat from "./pages/Chat";
+import { ChatProvider } from "./context/chatContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import "./App.css";
-import CreatePost from "./components/CreatePost.jsx";
 
 function App() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
+    // Simulate app initialization
+    const timer = setTimeout(() => {
       setLoading(false);
     }, 2000);
+
+    return () => clearTimeout(timer);
   }, []);
 
-  return (
-    <div>
-      {loading ? (
-        <div className="loading">
-          <ClipLoader size={130} color={"#00ffee"} loading={loading} />
-        </div>
-      ) : (
-        <div className="mt-2">
-          
-          <BrowserRouter>
-            <header className="w-full flex justify-center items-center sm:px-8 px-4 py-1">
-              <Link to="/">
-                <img src={logo} alt="logo" className="object-contain w-40" />
-              </Link>
-            </header>
+if (loading) {
+return (
+  <div className="loading-screen">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="loading-content"
+    >
+      <ClipLoader size={60} color="#00d4ff" loading={loading} />
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="loading-text"
+      >
+        Initializing AdoAI...
+      </motion.h2>
+    </motion.div>
+  </div>
+);
 
-            <main>
+}
+
+
+  return (
+    <ThemeProvider>
+      <ChatProvider>
+        <BrowserRouter>
+          <div className="app">
+            <Header />
+            <AnimatePresence mode="wait">
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/create-post" element={<CreatePost />} />
+                <Route path="/chat" element={<Chat />} />
               </Routes>
-            </main>
-          </BrowserRouter>
-        </div>
-      )}
-    </div>
+            </AnimatePresence>
+          </div>
+        </BrowserRouter>
+      </ChatProvider>
+    </ThemeProvider>
   );
 }
 

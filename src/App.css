@@ -1,9 +1,34 @@
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+.loading-screen {
+  position: fixed;        /* kunci ke layar, tidak ikut scroll */
+  top: 0;
+  left: 0;
+  width: 100vw;           /* penuh layar */
+  height: 100vh;          /* penuh layar */
+
+  display: flex;          /* aktifkan flexbox */
+  justify-content: center;/* center horizontal */
+  align-items: center;    /* center vertical */
+
+  background: #0f1115;    /* opsional: warna latar */
+  z-index: 9999;          /* pastikan di atas elemen lain */
 }
+
+/* Untuk styling tambahan teks */
+.loading-text {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem; /* jarak antar spinner & teks */
+}
+
+
+/* Video background tetap di belakang */
 #video-background {
   position: fixed;
   top: 0;
@@ -14,22 +39,7 @@
 }
 
 #video-background video {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-#content {
-  position: relative;
-  z-index: 1;
-}
-
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
 }
